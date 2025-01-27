@@ -1,4 +1,9 @@
 import streamlit as st
+import pandas as pd
+table_data = pd.DataFrame({
+    'Name': ['Sohail', 'Sohrab', 'Aniket', 'Ajay', 'Bhumi', 'Suraj', 'Akash', 'Darshan', 'Surya', 'Shivani'],
+    'Age': [22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+})
 
 # Basic Text Elements
 st.title('Hello Streamlit!') # Title 
@@ -79,3 +84,24 @@ js_code = '''function hello_streamlit() {
 st.code(js_code, language='javascript')
 
 
+# Metrics
+st.header("Metrics Function")
+st.metric(label="Revenue", value="₹100,000", delta="10%")
+st.metric(label="Profit", value="₹50,000", delta="20%")
+st.metric(label="Loss", value="₹10,000", delta="-20%", delta_color="normal")
+st.metric(label="Sales", value="1000", delta="50%")
+
+st.metric(label="Wind Speed", value="120ms⁻¹", delta="1.4ms⁻¹")
+
+
+# Tables
+st.header("Table")
+st.table(table_data)
+
+# DataFrames
+st.header("DataFrame")
+st.dataframe(table_data)
+
+# DataFrames with Styling
+st.header("Styled DataFrame")
+st.dataframe(table_data.style.highlight_max(axis=0))
