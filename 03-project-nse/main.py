@@ -310,7 +310,7 @@ left_col, right_col = col1.columns([1, 4])
 
 # Left column - Metrics
 with left_col:
-    st.metric(label="Net Inflows", value="₹ 1,24,737.46 cr", delta="as on Sep 2024")
+    st.metric(label="Net Inflows", value="₹ 12,446 cr", delta="as on Sep 2024")
     
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -422,7 +422,7 @@ left_col, right_col = col1.columns([1, 4])
 
 # Left column - Metrics
 with left_col:
-    st.metric(label="Aggregate Adv", value="₹ 56,84,737.46 cr", delta="as on Sep 2024", delta_color="inverse", help="Average Daily Volume")
+    st.metric(label="Aggregate Adv", value="₹ 56,846 cr", delta="as on Sep 2024", delta_color="inverse", help="Average Daily Volume")
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Metrics with colored dots
@@ -957,12 +957,10 @@ col1.markdown("<div class='section-title'>NSE Indices</div>", unsafe_allow_html=
 tab1, tab2 = col1.tabs(["Top Gainers", "Top Losers"])
 
 with tab1:
-    st.write("**Top Gainers**")
     st.dataframe(nse_gainers_df.style.applymap(lambda v: 'color: green' if isinstance(v, (int, float)) and v > 0 else '', subset=["%CHNG"]))
     st.markdown("[View All >](#)")
 
 with tab2:
-    st.write("**Top Losers**")
     st.dataframe(nse_losers_df.style.applymap(lambda v: 'color: red' if isinstance(v, (int, float)) and v < 0 else '', subset=["%CHNG"]))
     st.markdown("[View All >](#)")
 
@@ -971,16 +969,15 @@ col2.markdown("<div class='section-title'>ETFs</div>", unsafe_allow_html=True)
 tab1, tab2 = col2.tabs(["Top Gainers", "Top Losers"])
 
 with tab1:
-    st.write("**Top Gainers**")
     st.dataframe(etf_gainers_df.style.applymap(lambda v: 'color: green' if isinstance(v, (int, float)) and v > 0 else '', subset=["%CHNG"]))
     st.markdown("[View All >](#)")
 
 with tab2:
-    st.write("**Top Losers**")
     st.dataframe(etf_losers_df.style.applymap(lambda v: 'color: red' if isinstance(v, (int, float)) and v < 0 else '', subset=["%CHNG"]))
     st.markdown("[View All >](#)")
 
 col3.markdown("<div class='section-title'>News</div>", unsafe_allow_html=True)
+
 
 news_data = [
     {
