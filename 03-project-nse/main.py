@@ -219,7 +219,7 @@ def create_bar_chart(x, y, title, color):
     ))
     fig.update_layout(
         title=title,
-        plot_bgcolor="white",
+        # plot_bgcolor="white",
         xaxis_title="Month",
         yaxis_title="Value",
         showlegend=False,
@@ -353,7 +353,7 @@ with right_col:
 
     fig.update_layout(
         barmode='stack',
-        plot_bgcolor='white',
+        # plot_bgcolor='white',
         height=400,
         margin=dict(l=40, r=40, t=20, b=40),
         legend=dict(
@@ -482,7 +482,7 @@ with right_col:
         fig.update_layout(
             title='Asset Performance Over Time',
             showlegend=True,
-            plot_bgcolor='white',
+            # plot_bgcolor='white',
             height=400,
             margin=dict(l=40, r=40, t=40, b=40),
             legend=dict(
@@ -606,7 +606,7 @@ with right_col:
         fig.update_layout(
             barmode='group',
             showlegend=True,
-            plot_bgcolor='white',
+            # plot_bgcolor='white',
             height=400,
             margin=dict(l=40, r=40, t=20, b=40),
             legend=dict(
@@ -741,7 +741,7 @@ fig_line.add_trace(go.Scatter(
 ))
 
 fig_line.update_layout(
-    plot_bgcolor='white',
+    # plot_bgcolor='white',
     height=300,
     margin=dict(l=40, r=40, t=20, b=40),
     xaxis=dict(
@@ -981,7 +981,7 @@ with tab2:
     st.markdown("[View All >](#)")
 
 col3.markdown("<div class='section-title'>News</div>", unsafe_allow_html=True)
-# Sample news data
+
 news_data = [
     {
         "headline": "Interview: Shaktikanta Das good at short-term fixes, says ex-finance Minister of Sta...",
@@ -1142,5 +1142,10 @@ st.markdown("""
                                 </ul>
                             </div>
                         </div>
+                        <div style="background-color: #f8f9fa; padding: 1rem 0; text-align: center; margin-top: 2rem;">
+                <p style="color: #6c757d; margin: 0;">&copy; 2024 National Stock Exchange of India Limited. All rights reserved. Sohail Shaikh</p>
+            </div>
                     </div>
+                    
+                    
                     """, unsafe_allow_html=True)
