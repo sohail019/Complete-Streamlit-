@@ -79,6 +79,41 @@ st.markdown("""
     font-size: 0.9rem;
     color: green;
 }
+
+.stButton > button {
+        background-color: #EEF2FF;
+        color: #4B5563;
+        border: none;
+        padding: 0.375rem 1rem;
+        border-radius: 0.375rem;
+}
+.stButton > button:hover {
+        background-color: #DBEAFE;
+}
+.stButton > button:focus {
+        background-color: #1E3A8A;
+        color: white;
+}
+
+.metric-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #fffff;
+}
+.metric-label {
+        font-size: 0.875rem;
+        color: #6B7280;
+}
+.metric-date {
+        font-size: 0.75rem;
+        color: #fffff;
+}
+.metric-row {
+        font-size: 0.875rem;
+        color: #ffffff;
+        margin: 0.5rem 0;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -113,34 +148,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Custom CSS
-st.markdown("""
-    <style>
-    .stButton > button {
-        background-color: #EEF2FF;
-        color: #4B5563;
-        border: none;
-        padding: 0.375rem 1rem;
-        border-radius: 0.375rem;
-    }
-    .stButton > button:hover {
-        background-color: #DBEAFE;
-    }
-    .stButton > button:focus {
-        background-color: #1E3A8A;
-        color: white;
-    }
-    .metric-value {
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
-    .metric-label {
-        color: #4B5563;
-        font-size: 0.875rem;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
 # Sample data for Asset Types
 months = ['Jan 24', 'Feb 24', 'Mar 24', 'Apr 24', 'May 24', 'Jun 24', 'Jul 24', 'Aug 24', 'Sep 24']
 df = pd.DataFrame({
@@ -167,6 +174,7 @@ with col1:
     c2.markdown("₹ 54,454 cr")
     c1.markdown("Index Fund:")
     c2.markdown("₹ 48,627 cr")
+    
 
     st.markdown("##### Asset Type")
     c1, c2 = st.columns(2)
@@ -263,3 +271,88 @@ with col3:
     with asset_type_tab[3]:  # Commodity Tab
         fig_commodity = create_bar_chart(df['Month'], df['Commodity'], "Commodity", "#F59E0B")
         st.plotly_chart(fig_commodity, use_container_width=True, key="commodity")
+
+
+
+# NET INFLOWS SECTION
+st.markdown("<hr>", unsafe_allow_html=True)
+net_inflows_data = {
+    'Month': ['Jan 23', 'Feb 23', 'Mar 23', 'Apr 23', 'May 23', 'Jun 23', 'Jul 23', 'Aug 23', 'Sep 23'],
+    'ETF': [1.2, 1.3, 1.2, 1.8, 1.4, 1.5, 1.6, 2.0, 2.2],
+    'Index Fund': [1.0, 1.1, 1.0, 1.5, 1.2, 1.3, 1.4, 1.8, 2.0]
+}
+net_inflows_data_df = pd.DataFrame(net_inflows_data)
+
+left_col, right_col = st.columns([1, 4])  # 1st column small, 2nd column large
+
+# Left column - Metrics
+with left_col:
+    # st.markdown("### NET INFLOWS:")
+    st.metric(label="Net Inflows", value="₹ 1,24,737.46 cr", delta="as on Sep 2023")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # ETF and Index Fund metrics
+    st.markdown("""
+        <div class='metric-row'>
+            <span style='display: inline-block; width: 12px; height: 12px; background-color: #FCD9BD; border-radius: 50%; margin-right: 8px;'></span>
+            ETF: <span style='float: right'>₹ 54,454 cr</span>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    
+    st.markdown("""
+        <div class='metric-row'>
+            <span style='display: inline-block; width: 12px; height: 12px; background-color: #2563EB; border-radius: 50%; margin-right: 8px;'></span>
+            Index Fund: <span style='float: right'>₹ 54,454 cr</span>
+        </div>
+    """, unsafe_allow_html=True)
+    
+
+# Right column - Double Stack Bar Chart
+with right_col:
+    fig = go.Figure()
+    
+    # Add Index Fund bars (bottom)
+    fig.add_trace(go.Bar(
+        x=net_inflows_data_df['Month'],
+        y=net_inflows_data_df['Index Fund'],  # Ensure this column name is correct
+        name='Index Fund',
+        marker_color='#2563EB'
+    ))
+    
+    # Add ETF bars (top)
+    fig.add_trace(go.Bar(
+        x=net_inflows_data_df['Month'],
+        y=net_inflows_data_df['ETF'],
+        name='ETF',
+        marker_color='#FCD9BD'
+    ))
+    
+    # Update layout
+    fig.update_layout(
+        barmode='stack',
+        plot_bgcolor='white',
+        height=400,
+        margin=dict(l=40, r=40, t=20, b=40),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+        xaxis=dict(
+            showgrid=False,
+            showline=True,
+            linecolor='#E5E7EB'
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='#E5E7EB',
+            zeroline=False,
+            range=[0, 6]  # Set y-axis range from 0 to 6
+        )
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
