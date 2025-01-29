@@ -8,6 +8,7 @@ from docx import Document
 import plotly.express as px
 import base64
 from io import BytesIO
+from PIL import Image
 
 
 # Function for file reading
@@ -20,6 +21,10 @@ def read_txt(file):
 def read_docx(file):
     doc = Document(file)
     return " ".join([p.text for p in doc.paragraphs])
+
+def read_image(file):
+    image = Image.open(file)
+    return image
 
 def read_pdf(file):
     pdf = PyPDF2.PdfReader(file)  
@@ -48,7 +53,7 @@ def get_table_download_link(df,filename, filelabel):
 st.title("Word Cloud Generator")
 st.subheader("📂 Upload a pdf, docx, or text file to generate a word cloud")
 
-uploaded_file = st.file_uploader("Choose a file", type=['pdf', 'docx', 'txt'])
+uploaded_file = st.file_uploader("Choose a file", type=['pdf', 'docx', 'txt', "jpg", "jpeg", "png"])
 
 if uploaded_file: 
     file_details = {"FileName":uploaded_file.name,"FileType":uploaded_file.type}
@@ -59,6 +64,11 @@ if uploaded_file:
         text = read_txt(uploaded_file)
     elif uploaded_file.type == "application/pdf":
         text = read_pdf(uploaded_file)
+    elif uploaded_file.type == "image/jpeg" or uploaded_file.type == "image/png":
+        image = read_image(uploaded_file)
+        st.image(image)
+        st.error("Image file type is not supported. Please upload a txt, pdf or docx file.")
+        st.stop()
     elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         text = read_docx(uploaded_file)
     else:
