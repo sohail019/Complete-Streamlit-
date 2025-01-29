@@ -5,9 +5,7 @@ import time
 
 st.title("Chat with OpenAI")
 
-# openai_api_key = st.sidebar.text_input("Enter your OpenAI API key")
-
-openai_api_key = "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"
+openai_api_key = st.sidebar.text_input("Enter your OpenAI API key")
 
 if openai_api_key.startswith("sk-"):
     llm = OpenAI(api_key=openai_api_key)
