@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
+import re
 
 # Set page configuration
 st.set_page_config(page_title="NSE Cogencies", layout="wide")
@@ -604,6 +605,7 @@ with right_col:
         
         # Update layout
         fig.update_layout(
+            title= 'Investor Type-wise Folio Distribution',
             barmode='group',
             showlegend=True,
             # plot_bgcolor='white',
@@ -621,7 +623,7 @@ with right_col:
                 showgrid=True,
                 showline=True,
                 linecolor='#E5E7EB',
-                tickangle=45  # Rotate x-axis labels for better readability
+                tickangle=0  
             ),
             yaxis=dict(
                 title='Value (in Cr)',
@@ -681,7 +683,6 @@ with right_col:
             
             st.plotly_chart(fig, use_container_width=True)
 
-# Title
 # col2.header("Passive Fund Statistics",)
 col2.markdown("<div class='section-title'>Passive Fund Statistics</div>", unsafe_allow_html=True)
 
@@ -879,43 +880,52 @@ fig_bar.update_layout(
 )
 
 col2.plotly_chart(fig_bar, use_container_width=True)
+# Feedback Form
+col2.markdown("<div class='section-title'>Feedback Form</div>", unsafe_allow_html=True)
 
-col2.markdown("<div class='section-title'>Market Overview</div>", unsafe_allow_html=True)
+with col2.form(key='feedback_form'):
+    name = st.text_input("Name")
+    email = st.text_input("Email")
+    feedback = st.text_area("Feedback")
+    submit_button = st.form_submit_button(label='Submit')
+
+    if submit_button:
+        st.success("Thank you for your feedback!")
 
 row1_col1, row1_col2 = col2.columns(2)
 
-with row1_col1:
-    st.metric(label="NIFTY 50", value="19,776.05", delta="+5.10 (0.05%)")
+# with row1_col1:
+#     st.metric(label="NIFTY 50", value="19,776.05", delta="+5.10 (0.05%)")
 
-with row1_col2:
-    fig_donut = go.Figure()
-    fig_donut.add_trace(go.Pie(
-        values=[20, 30, 10, 40],
-        labels=['Advances', 'Declines', 'Unchanged', 'Not Traded'],
-        hole=0.7,
-        direction='clockwise',
-        rotation=90,
-        showlegend=False,
-        textinfo='none',
-        marker_colors=['#34D399', '#F87171', '#FDBA74', '#93C5FD']
-    ))
+# with row1_col2:
+#     fig_donut = go.Figure()
+#     fig_donut.add_trace(go.Pie(
+#         values=[20, 30, 10, 40],
+#         labels=['Advances', 'Declines', 'Unchanged', 'Not Traded'],
+#         hole=0.7,
+#         direction='clockwise',
+#         rotation=90,
+#         showlegend=False,
+#         textinfo='none',
+#         marker_colors=['#34D399', '#F87171', '#FDBA74', '#93C5FD']
+#     ))
     
-    # Update layout for half donut
-    fig_donut.update_layout(
-        width=300,
-        height=200,
-        margin=dict(t=0, b=0, l=0, r=0),
-        annotations=[dict(text='66%', x=0.5, y=0.5, font_size=24, showarrow=False)]
-    )
+#     # Update layout for half donut
+#     fig_donut.update_layout(
+#         width=300,
+#         height=200,
+#         margin=dict(t=0, b=0, l=0, r=0),
+#         annotations=[dict(text='66%', x=0.5, y=0.5, font_size=24, showarrow=False)]
+#     )
     
-    # Clip to show only top half
-    fig_donut.update_layout(
-        showlegend=False,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)'
-    )
+#     # Clip to show only top half
+#     fig_donut.update_layout(
+#         showlegend=False,
+#         paper_bgcolor='rgba(0,0,0,0)',
+#         plot_bgcolor='rgba(0,0,0,0)'
+#     )
     
-    st.plotly_chart(fig_donut)
+#     st.plotly_chart(fig_donut)
 
 # Data for the table
 nse_gainers_data = {
@@ -1033,7 +1043,7 @@ news_fund_offer_data = [
         "closing_date": "19 Oct, 2024"
     },
     {
-        "status": "Close",
+        "status": "Closed",
         "headline": "BOB Commodity Fund ",
         "details": "Commodity | Open Ended | Medium Risk",
         "icon": "https://companieslogo.com/img/orig/BANKBARODA.NS-6790b239.png",
@@ -1051,7 +1061,7 @@ news_fund_offer_data = [
         "closing_date": "21 Oct, 2024"
     },
     {
-        "status": "Close",
+        "status": "Closed",
         "headline": "HDFC New Index Fund Launched",
         "details": "Index | Open Ended | Low Risk",
         "icon": "https://companieslogo.com/img/orig/HDB-bb6241fe.png?t=1720244492",
@@ -1070,12 +1080,12 @@ news_fund_offer_data = [
     },
 ]
 
-# col1, col2 = st.columns([2, 1])
+col1, col2 = st.columns([2, 1])
 col1.markdown("<div class='section-title'>News Fund Offer</div>", unsafe_allow_html=True)
 
 # Display news fund offer cards in a 3x3 grid
 for i in range(0, len(news_fund_offer_data), 3):
-    cols = st.columns(3)
+    cols = col1.columns(3)
     for col, news_fund in zip(cols, news_fund_offer_data[i:i+3]):
         col.markdown(f"""
             <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
@@ -1093,6 +1103,61 @@ for i in range(0, len(news_fund_offer_data), 3):
             </div>
         """, unsafe_allow_html=True)
 
+
+        # Additional Form for NSE Cogencies
+# col2.markdown("<div class='section-title'>NSE Cogencies Form</div>", unsafe_allow_html=True)
+
+# with col2.form(key='nse_cogencies_form'):
+#         name = st.text_input("Name")
+#         email = st.text_input("Email")
+#         age = st.number_input("Age", min_value=18, max_value=100, step=1)
+#         gender = st.radio("Gender", options=["Male", "Female", "Other"])
+#         investment_experience = st.selectbox("Investment Experience", options=["Beginner", "Intermediate", "Expert"])
+#         feedback = st.text_area("Feedback")
+#         submit_button = st.form_submit_button(label='Submit')
+
+#         if submit_button:
+#             st.success("Thank you for your submission!")
+
+col2.markdown("<div class='section-title'>NSE Cogencies</div>", unsafe_allow_html=True)
+
+with col2.form(key='nse-cogrencies'):
+    name = st.text_input("Name")
+    email = st.text_input("Email")
+    age = st.number_input("Age", min_value=18, max_value=100, step=1)
+    gender = st.radio("Gender", options=["Male", "Female", "Other"], horizontal=True)
+    investment_experience = st.selectbox("Investment Experience", options=["Beginner", "Intermediate", "Expert"])
+    feedback = st.text_area("Feedback", height=70)
+    submit_button = st.form_submit_button(label='Submit')
+
+
+    error_messages = []
+
+    if submit_button:
+        if not name.strip():
+            error_messages.append("⚠️ Name is required.")
+
+        email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+        if not email.strip():
+            error_messages.append("⚠️ Email is required.")
+        elif not re.match(email_pattern, email):
+            error_messages.append("⚠️ Please enter a valid email address.")
+
+        if not gender:
+            error_messages.append("⚠️ Please select a gender.")
+
+        if not investment_experience:
+            error_messages.append("⚠️ Please select your investment experience level.")
+
+        if len(feedback.strip()) < 10:
+            error_messages.append("⚠️ Feedback must be at least 10 characters long.")
+
+        if error_messages:
+            for error in error_messages:
+                st.error(error)
+        else:
+            st.success("Thank you for your feedback!")
+        
 
 #  Footer
 # Footer
