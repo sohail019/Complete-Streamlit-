@@ -9,6 +9,9 @@ import plotly.express as px
 import base64
 from io import BytesIO
 from PIL import Image
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe' 
 
 
 # Function for file reading
@@ -66,13 +69,12 @@ if uploaded_file:
         text = read_pdf(uploaded_file)
     elif uploaded_file.type == "image/jpeg" or uploaded_file.type == "image/png":
         image = read_image(uploaded_file)
-        st.image(image)
-        st.error("Image file type is not supported. Please upload a txt, pdf or docx file.")
-        st.stop()
+        st.image(image, caption='Uploaded Image', use_column_width=True)
+        text = pytesseract.image_to_string(image)
     elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         text = read_docx(uploaded_file)
     else:
-        st.error("File type not supported. Please upload a txt, pdf or docx file.")
+        st.error("File type not supported. Please upload a txt, pdf, docx, or image file.")
         st.stop()
 
     # Generate word count table
