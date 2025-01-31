@@ -14,6 +14,9 @@ import numpy as np
 import pickle
 from sklearn.compose import ColumnTransformer
 
+st.set_page_config(page_title="Machine learning App", layout="wide")
+
+
 # Function to preprocess data
 def preprocess_data(X, y, problem):
     # Identify categorical columns
